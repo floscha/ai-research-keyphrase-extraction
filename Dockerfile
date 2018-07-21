@@ -52,7 +52,9 @@ RUN sed -i '2 c\jar_path = /stanford-tagger/stanford-postagger.jar' config.ini &
 # Add actual source code
 ADD swisscom_ai swisscom_ai/
 ADD launch.py .
+ADD keyphrase_extractor.py .
 
-# Run python, optionally with launch.py as CMD
-ENTRYPOINT ["python"]
-CMD []
+EXPOSE 8000
+
+# Run Wildfire-powered microservice using Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "keyphrase_extractor:api"]
